@@ -2,9 +2,10 @@ import jax.numpy as jnp
 
 class BallisticStepper:
     g = 9.81
-    dt = 0.01
-    def __init__(self, cd=0.0):
+
+    def __init__(self, cd=0.0, dt=0.01):
         self.cd = cd
+        self.dt = dt
 
     def eoms(self, state):
         cd = self.cd
@@ -18,7 +19,7 @@ class BallisticStepper:
         return jnp.array([x_dot, y_dot, x_ddot, y_ddot])
 
     def integrate(self, state):
-        return state + BallisticStepper.dt*self.eoms(state)
+        return state + self.dt * self.eoms(state)
 
     def __call__(self, state):
         return self.integrate(state)
